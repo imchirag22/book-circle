@@ -20,7 +20,10 @@ const UserSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
         default: "",
+    },
+    refreshToken: {
+        type: String
     }
-})
+}, { timestamps: true })
 
 export default mongoose.model("Users", UserSchema)
