@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from "./api-Error";
+import { ApiError } from "./api-Error.js";
 
 // Generate access token
 const generateAccessToken = (userId) => {

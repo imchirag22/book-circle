@@ -124,7 +124,7 @@ const login = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200, 
-        { user: loggedInUser, accessToken }, 
+        { user: loggedInUser, accessToken, refreshToken }, 
         "User logged in successfully"
       )
     );
