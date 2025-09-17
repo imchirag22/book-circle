@@ -14,11 +14,9 @@ const Login = () => {
 
   const handleLogin = () => {
     setIsLoading(true)
-    // Simulate login
-    setTimeout(() => {
+    setTimeout( () => {
       console.log('Login pressed', { email, password })
-      setIsLoading(false)
-    }, 1500)
+      setIsLoading(false)},1500)
   };
 
   return (
