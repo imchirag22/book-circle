@@ -1,18 +1,28 @@
 import { Stack } from "expo-router";
-import SafeAreaScreen from "../components/SafeAreaScreen"
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { StatusBar } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import COLORS from "../constants/Colors";
+import { useFonts } from 'expo-font';
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    'Geist-Regular': require('../assets/fonts/geist_fonts/Geist/ttf/Geist-Regular.ttf'),
+    'Geist-Medium': require('../assets/fonts/geist_fonts/Geist/ttf/Geist-Medium.ttf'),
+    'Geist-SemiBold': require('../assets/fonts/geist_fonts/Geist/ttf/Geist-SemiBold.ttf'),
+    'Geist-Bold': require('../assets/fonts/geist_fonts/Geist/ttf/Geist-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null; // This will show nothing until fonts are loaded
+  }
+
   return (
     <SafeAreaProvider>
-    <SafeAreaScreen>
-  <Stack screenOptions={{headerShown:false}}>
-    <Stack.Screen name="index" />
-    <Stack.Screen name="(auth)" />
-  </Stack>
-  </SafeAreaScreen>
-  <StatusBar style="dark" />
-  </SafeAreaProvider>
-  )
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+        </Stack>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
 }

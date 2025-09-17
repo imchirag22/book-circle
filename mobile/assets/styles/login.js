@@ -1,117 +1,210 @@
-import { StyleSheet, Dimensions } from "react-native";
-import COLORS from "../../constants/Colors";
+import { StyleSheet, Dimensions, Platform } from 'react-native';
+import COLORS from '../../constants/Colors';
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: COLORS.background,
-    padding: 20,
-    justifyContent: "center",
-  },
-  scrollViewStyle: {
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  topIllustration: {
-    alignItems: "center",
-    width: "100%",
+  scrollView: {
+    flexGrow: 1,
   },
-  illustrationImage: {
-    width: width * 0.75,
-    height: width * 0.75,
+  contentContainer: {
+    paddingHorizontal: 24,
+    paddingTop: height * 0.05,
+    paddingBottom: 30,
+    alignItems: 'center',
+    minHeight: '100%',
   },
-  card: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    padding: 24,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    borderWidth: 2,
-    borderColor: COLORS.border,
-    marginTop: -24,
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
   },
-  header: {
-    alignItems: "center",
-    marginBottom: 24,
+  logo: {
+    width: width * 0.5,
+    height: width * 0.5,
+    marginBottom: 16,
   },
-  title: {
-    fontSize: 32,
-    fontWeight: "700",
+  appTitle: {
+    fontSize: 28,
+    fontFamily: 'Geist-Bold',
     color: COLORS.textPrimary,
     marginBottom: 8,
   },
-  subtitle: {
+  appTagline: {
     fontSize: 16,
+    fontFamily: 'Geist-Regular',
     color: COLORS.textSecondary,
-    textAlign: "center",
+    textAlign: 'center',
+    marginBottom: 10,
   },
-  formContainer: {
-    marginBottom: 16,
+  formCard: {
+    width: '100%',
+    backgroundColor: COLORS.white,
+    borderRadius: 24,
+    padding: 24,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.1,
+        shadowRadius: 24,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+    marginBottom: 24,
+  },
+  formTitle: {
+    fontSize: 22,
+    fontFamily: 'Geist-Bold',
+    color: COLORS.textDark,
+    marginBottom: 28,
+    textAlign: 'center',
   },
   inputGroup: {
     marginBottom: 20,
   },
-  label: {
+  inputLabel: {
     fontSize: 14,
-    marginBottom: 8,
+    fontFamily: 'Geist-SemiBold',
     color: COLORS.textPrimary,
-    fontWeight: "500",
+    marginBottom: 8,
+    paddingLeft: 8
   },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: COLORS.inputBackground,
-    borderRadius: 12,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: COLORS.border,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
+    height: 56,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
   inputIcon: {
-    marginRight: 10,
+    marginRight: 12,
+    
   },
-  input: {
+  textInput: {
     flex: 1,
-    height: 48,
+    height: '100%',
+    fontSize: 14,
+    fontFamily: 'Geist-Regular',
     color: COLORS.textDark,
   },
-  eyeIcon: {
-    padding: 8,
+  forgotPasswordContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 24,
   },
-  button: {
+  forgotPasswordText: {
+    fontSize: 14,
+    fontFamily: 'Geist-Regular',
+    color: COLORS.primary,
+  },
+  loginButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 16,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    borderRadius: 16,
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.primary,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
   },
-  buttonText: {
+  loginButtonText: {
     color: COLORS.white,
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 18,
+    fontFamily: 'Geist-SemiBold',
   },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
+  orContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 24,
+  },
+  orLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: COLORS.border,
+  },
+  orText: {
+    paddingHorizontal: 16,
+    color: COLORS.textSecondary,
+    fontSize: 14,
+    fontFamily: 'Geist-Regular',
+  },
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    height: 56,
+    paddingHorizontal: 16,
+    width: '48%',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  socialButtonIcon: {
+    marginRight: 8,
+  },
+  socialButtonText: {
+    fontSize: 14,
+    fontFamily: 'Geist-Medium',
+    color: COLORS.textDark,
+  },
+  signupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 24,
   },
-  footerText: {
+  signupText: {
+    fontSize: 14,
+    fontFamily: 'Geist-Regular',
     color: COLORS.textSecondary,
-    marginRight: 5,
   },
-  link: {
+  signupLink: {
+    fontSize: 14,
+    fontFamily: 'Geist-SemiBold',
     color: COLORS.primary,
-    fontWeight: "600",
+    marginLeft: 4,
   },
 });
 
