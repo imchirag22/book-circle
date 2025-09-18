@@ -5,9 +5,11 @@ import authRoutes from './routes/authRoutes.js'
 import booksRoutes from './routes/booksRoutes.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'  
+import job from "./config/cron.js"
 
 config()
 
+job.start()
 const app = express()
 const PORT = process.env.PORT || 3000
 
