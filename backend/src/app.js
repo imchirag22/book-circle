@@ -22,8 +22,8 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }))  // Increase limit for image uploads
 app.use(cookieParser())
 
-app.use('/api/auth', authRoutes)
-app.use('/api/books', booksRoutes)
+app.use('/auth', authRoutes)
+app.use('/books', booksRoutes)
 
 
 connectDB()
