@@ -1,6 +1,6 @@
 import express from "express";
-import  {  getBooks , getAllBooks, deleteBook, userRecommendation } from "../controllers/bookController";
-import { verifyJWT } from "../middleware/authMiddleware";
+import  {  getBooks , getAllBooks, deleteBook, userRecommendation } from "../controllers/bookController.js";
+import { verifyJWT } from "../middleware/authMiddleware.js";
 
 const router = express.Router()
 

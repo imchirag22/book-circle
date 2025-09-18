@@ -1,8 +1,8 @@
-import Book from "../model/Books";
+import Book from "../model/Books.js";
 
-import { asyncHandler } from "../utils/asyncHandler";
-import cloudinary from "../config/cloudinary";
-import Users from "../model/Users";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import cloudinary from "../config/cloudinary.js";
+import Users from "../model/Users.js";
 
 const getBooks = asyncHandler(async (req,res) => {
     const {title,captions,rating,image} = req.body
