@@ -202,4 +202,33 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { signup, login, logout, refreshAccessToken };
+const getUser = asyncHandler(async (req, res) => {
+  // Get user ID from request params or query
+  const userId = req.params.id || req.query.id;
+  const email = req.query.email;
+  const userName = req.query.userName;
+  
+  // Check if at least one search parameter is provided
+  if (!userId && !email && !userName) {
+    throw new ApiError(400, "Please provide user ID, email, or username");
+  }
+  
+  // Build query object based on provided parameters
+  const query = {};
+  if (userId) query._id = userId;
+  if (email) query.email = email;
+  if (userName) query.userName = userName;
+  
+  // Find user without returning password
+  const user = await Users.findOne(query).select("-password -refreshToken");
+  
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+  
+  return res.status(200).json(
+    new ApiResponse(200, { user }, "User found successfully")
+  );
+});
+
+export { signup, login, logout, refreshAccessToken, getUser };
