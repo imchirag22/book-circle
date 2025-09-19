@@ -1,0 +1,50 @@
+import { Tabs } from "expo-router";
+import Feather from '@expo/vector-icons/Feather';
+import COLORS from "../../constants/Colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+
+
+const TabLayout = () => {
+    const insets = useSafeAreaInsets();
+  return (
+   <Tabs screenOptions={{
+    headerShown: false,
+    tabBarActiveTintColor: COLORS.primary,
+    headerTitleStyle: {
+      color: COLORS.textPrimary,
+      fontWeight: "600",
+    },
+    headerShadowVisible: false,
+    tabBarStyle: {
+      backgroundColor: COLORS.cardBackground,
+      borderTopWidth: 1,
+      borderTopColor: COLORS.border,
+      paddingTop: 5,
+      paddingBottom: insets.bottom,
+      height: 60 + insets.bottom,
+    },
+  }}>
+    <Tabs.Screen name="index" options={{
+        title: "Home",
+        tabBarIcon: ({color,size}) => ( 
+            <Feather name="home" size={size} color={color} />
+        )
+    }}/>
+        <Tabs.Screen name="addBook" options={{
+        title: "Add Book",
+        tabBarIcon: ({color,size}) => ( 
+            <Feather name="plus-circle" size={size} color={color} />
+        )
+    }}/>
+    <Tabs.Screen name="profile" options={{
+        title: "Profile",
+        tabBarIcon: ({color,size}) => ( 
+            <Feather name="user" size={size} color={color} />
+        )
+    }}/>
+   </Tabs>
+  )
+}
+
+export default TabLayout
