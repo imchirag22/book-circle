@@ -1,23 +1,25 @@
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native'
 import COLORS from '../../constants/Colors'
 import styles from '../../assets/styles/signup'
 import Feather from '@expo/vector-icons/Feather';
 import { useState } from 'react';
 import { Link } from 'expo-router';
+import { useAuthStore } from '../../store/authStore';
+
+
 const Signup = () => {
   
   const [email,setEmail] = useState("")
-  const [fullName,setFullName] = useState("")
+  const [userName,setuserName] = useState("")
   const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  
 
-  const handleSignUp = () => {
-    setIsLoading(true)
-    setTimeout(() => {
-      console.log('Signup pressed', { email, fullName, password })
-      setIsLoading(false)
-    }, 1500)
+  const { signup, isLoading } = useAuthStore()
+
+  const handleSignUp = async() => {
+    const result = await signup(userName,email,password )
+    if (!result) Alert.alert("Error", result.error)
   }
   return (
     
@@ -49,8 +51,8 @@ const Signup = () => {
                   style={styles.textInput}
                   placeholder="Enter your Full Name"
                   placeholderTextColor={COLORS.placeholderText}
-                  value={fullName}
-                  onChangeText={setFullName}
+                  value={userName}
+                  onChangeText={setuserName}
                   autoCapitalize="none"
                 />
               </View>

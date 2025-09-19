@@ -1,22 +1,21 @@
-import { TextInput, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native'
+import { TextInput, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from 'react-native'
 import styles from '../../assets/styles/login'
 import { useState } from 'react'
 import { Image } from 'expo-image';
 import Feather from '@expo/vector-icons/Feather';
 import COLORS from '../../constants/Colors';
 import {Link} from 'expo-router'
+import { useAuthStore } from '../../store/authStore';
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+ const {isLoading, login } = useAuthStore
 
-  const handleLogin = () => {
-    setIsLoading(true)
-    setTimeout( () => {
-      console.log('Login pressed', { email, password })
-      setIsLoading(false)},1500)
+  const handleLogin = async () => {
+   const result = await login (email,password)
+   if (!result) Alert.alert("Error", result.error)
   };
 
   return (
