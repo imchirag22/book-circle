@@ -70,8 +70,8 @@ const signup = asyncHandler(async (req, res) => {
     .cookie("accessToken", accessToken, options)
     .json(
       new ApiResponse(
-        201, 
-        { user: createdUser, accessToken }, 
+        201,
+        { user: createdUser, token: accessToken },
         "User registered successfully"
       )
     );
@@ -123,8 +123,8 @@ const login = asyncHandler(async (req, res) => {
     .cookie("accessToken", accessToken, options)
     .json(
       new ApiResponse(
-        200, 
-        { user: loggedInUser, accessToken, refreshToken }, 
+        200,
+        { user: loggedInUser, token: accessToken },
         "User logged in successfully"
       )
     );
