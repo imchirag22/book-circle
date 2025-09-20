@@ -2,7 +2,7 @@ import { SplashScreen,Stack, useRouter, useSegments } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/Colors";
 import { useFonts } from 'expo-font';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {useAuthStore} from "../store/authStore.js"
 
 
@@ -10,8 +10,9 @@ import {useAuthStore} from "../store/authStore.js"
 export default function RootLayout() {
   const router = useRouter()
   const segment = useSegments()
+  const [isAuthReady, setIsAuthReady] = useState(false)
   
-  const {checkAuth,token, user} = useAuthStore
+  const {checkAuth,token, user} = useAuthStore()
 
   const [fontsLoaded] = useFonts({
     'Geist-Regular': require('../assets/fonts/geist_fonts/Geist/ttf/Geist-Regular.ttf'),
@@ -25,17 +26,33 @@ export default function RootLayout() {
   }, [fontsLoaded]);
 
 
+  // Check authentication status on mount
   useEffect(() => {
-    checkAuth()
-  },)
+    async function loadAuthState() {
+      await checkAuth()
+      setIsAuthReady(true)
+    }
+    loadAuthState()
+  }, [checkAuth])
 
-  useEffect( () => {
-    const inAuthScreen = segment[0] === '/(auth)'
+  // Handle navigation after auth is ready
+  useEffect(() => {
+    if (!isAuthReady) return;
+    
+    const inAuthGroup = segment[0] === '(auth)'
     const isSignedIn = user && token
 
-    if (!isSignedIn && !inAuthScreen) router.replace('/(auth)')
-      else if (isSignedIn && inAuthScreen) router.replace('/(tabs)')
-  }, [user, token, segment, router])
+    if (!isSignedIn && !inAuthGroup) {
+      router.replace('/(auth)')
+    } else if (isSignedIn && inAuthGroup) {
+      router.replace('/(tabs)')
+    }
+  }, [isAuthReady, user, token, segment, router])
+
+  // Don't render anything until fonts and auth check are complete
+  if (!fontsLoaded || !isAuthReady) {
+    return null;
+  }
  
 
   return (

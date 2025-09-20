@@ -11,11 +11,16 @@ const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
- const {isLoading, login } = useAuthStore
+ const {isLoading, login } = useAuthStore()
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      return Alert.alert("Error", "Please fill in all fields.");
+    }
    const result = await login (email,password)
-   if (!result) Alert.alert("Error", result.error)
+   if (result && result.error) {
+    Alert.alert("Error", result.error);
+   }
   };
 
   return (

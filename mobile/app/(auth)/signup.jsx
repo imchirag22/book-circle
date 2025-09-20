@@ -18,8 +18,13 @@ const Signup = () => {
   const { signup, isLoading } = useAuthStore()
 
   const handleSignUp = async() => {
+    if (!email || !userName || !password) {
+      return Alert.alert("Error", "Please fill in all fields.");
+    }
     const result = await signup(userName,email,password )
-    if (!result) Alert.alert("Error", result.error)
+    if (result && result.error) {
+      Alert.alert("Error", result.error);
+    }
   }
   return (
     

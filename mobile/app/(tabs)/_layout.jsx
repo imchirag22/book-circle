@@ -22,7 +22,7 @@ const TabLayout = () => {
       borderTopColor: COLORS.border,
       paddingTop: 5,
       paddingBottom: insets.bottom,
-      height: 60 + insets.bottom,
+      height: 30 + insets.bottom,
     },
   }}>
     <Tabs.Screen name="index" options={{

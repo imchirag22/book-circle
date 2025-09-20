@@ -14,28 +14,37 @@ export const useAuthStore = create((set) => ({
     try {
       const response = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userName,
-          email,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userName, email, password }),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = errorText;
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.message || errorText;
+        } catch (_e) {
+          // Ignore parsing error, use raw text
+        }
+        throw new Error(errorMessage);
+      }
 
-      if (!response.ok) throw new Error(data.message || "Something went wrong");
+      const responseData = await response.json();
+      const { data } = responseData; // Destructure the nested data object
+
+      if (!data.user || !data.token) {
+        throw new Error("Signup successful, but server did not return user data or token.");
+      }
 
       await AsyncStorage.setItem("user", JSON.stringify(data.user));
       await AsyncStorage.setItem("token", data.token);
-
       set({ token: data.token, user: data.user, isLoading: false });
-
       return { success: true };
+
     } catch (error) {
       set({ isLoading: false });
+      console.error("Caught error in signup:", error);
       return { success: false, error: error.message };
     }
   },
@@ -43,31 +52,40 @@ export const useAuthStore = create((set) => ({
 // login
   login: async (email, password) => {
     set({ isLoading: true });
-
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = errorText;
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.message || errorText;
+        } catch (_e) {
+          // Ignore parsing error, use raw text
+        }
+        throw new Error(errorMessage);
+      }
 
-      if (!response.ok) throw new Error(data.message || "Something went wrong");
+      const responseData = await response.json();
+      const { data } = responseData; // Destructure the nested data object
 
+      if (!data.user || !data.token) {
+        throw new Error("Login successful, but server did not return user data or token.");
+      }
+      
       await AsyncStorage.setItem("user", JSON.stringify(data.user));
       await AsyncStorage.setItem("token", data.token);
-
       set({ token: data.token, user: data.user, isLoading: false });
-
       return { success: true };
+
     } catch (error) {
       set({ isLoading: false });
+      console.error("Caught error in login:", error);
       return { success: false, error: error.message };
     }
   },
