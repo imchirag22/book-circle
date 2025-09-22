@@ -106,8 +106,23 @@ export const useAuthStore = create((set) => ({
 
   // logout
   logout: async () => {
-    await AsyncStorage.removeItem("token");
-    await AsyncStorage.removeItem("user");
-    set({ token: null, user: null });
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        await fetch(`${API_URL}/auth/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Failed to logout from server:", error);
+    } finally {
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("user");
+      set({ token: null, user: null });
+    }
   },
 }));

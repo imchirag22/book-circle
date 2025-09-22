@@ -1,19 +1,36 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
-import COLORS from '../../constants/Colors'
-import Feather from '@expo/vector-icons/Feather'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import COLORS from '../../constants/Colors';
+import Feather from '@expo/vector-icons/Feather';
+import { useAuthStore } from '../../store/authStore';
+import { router } from 'expo-router';
 
 const Profile = () => {
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/(auth)');
+  };
+
+  if (!user) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
-              <Feather name="user" size={40} color={COLORS.primary} />
+              <Image source={{ uri: user.profilePicture }} style={styles.avatarImage} />
             </View>
           </View>
-          <Text style={styles.name}>John Doe</Text>
-          <Text style={styles.email}>john.doe@example.com</Text>
+          <Text style={styles.name}>{user.userName}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
 
         <View style={styles.stats}>
@@ -64,7 +81,7 @@ const Profile = () => {
             <Feather name="chevron-right" size={16} color={COLORS.textSecondary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.menuItem, styles.logoutItem]}>
+          <TouchableOpacity onPress={handleLogout} style={[styles.menuItem, styles.logoutItem]}>
             <View style={styles.menuIcon}>
               <Feather name="log-out" size={20} color="#FF4444" />
             </View>
@@ -110,6 +127,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     borderColor: COLORS.primary,
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
   },
   name: {
     fontSize: 24,
